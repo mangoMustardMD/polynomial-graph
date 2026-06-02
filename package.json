@@ -1,7 +1,7 @@
 {
   "name": "Ultimate 67 Graph",
   "version": "0.0.0",
-  "description": "",
+  "description": "A project for AP calc AB",
   "main": "index.html",
   "type": "module",
   "scripts": {
@@ -11,8 +11,8 @@
     "serve": "vite build && vite preview --host"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "mangomustardmd",
+  "license": "Apache-2.0",
   "packageManager": "pnpm@10.30.3",
   "devDependencies": {
     "less": "^4.6.4",
