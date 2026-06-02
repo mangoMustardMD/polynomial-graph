@@ -1,0 +1,53 @@
+
+.polynomial-page {
+    display: block;
+    width: 100%;
+
+    .equation {
+        display: inline-flex;
+        flex-direction: row;
+        height: 100%;
+        flex-wrap: wrap;
+
+        .y-var {
+            position: relative;
+            bottom: -10px;
+        }
+
+        button {
+            width: 50px;
+            margin-left: 15px;
+            border-radius: 0;
+            background-color: #aaa;
+            box-shadow: none;
+            font-size: .5em;
+            text-align: center;
+        }
+    }
+
+    .term {
+        display: flex;
+        flex-direction: row;
+        min-width: 50px;
+        padding: 5px;
+        gap: 5px;
+        field-sizing: content;
+
+        input {
+            min-width: 20px;
+            field-sizing: content;
+        }
+
+        > input {
+            height: 15px;
+            bottom: -5px;
+            position: relative;
+            vertical-align: 0;
+        }
+
+        sup {
+            position: relative;
+            bottom: 10px;
+        }
+    }
+}
