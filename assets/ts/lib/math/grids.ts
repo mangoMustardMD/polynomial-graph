@@ -1,9 +1,9 @@
 import { graph } from "../../constants";
 import { XYarr } from "../misc/util";
 import { clusterNumbers, clusterNumbersAndGetMeans } from "./clusterNumbers";
-import { getMeansOfNumMap, isReal, keepRealNumsInArr, standardRoundArr, standardRoundNumber } from "./util";
 import { Grapher } from "./grapher";
 import { Xterm } from "./tokenizer";
+import { getRealSortedValuesOfNewtonsMethodOnXYArr } from "./newtonsMethod";
 
 type Stop = boolean;
 
@@ -67,44 +67,30 @@ export class GrapherWithGrids extends Grapher {
         // R(x) = 0
         const xR = Xterm.subtractPolynomials(a, b);
         const xRprime = Xterm.getDerivativesOfTerms(xR);
+        const hasNegativePowers = Xterm.hasNegativePowers(a)
+        || Xterm.hasNegativePowers(b);
 
-        const xyArr: XYarr[] = this.getXYvaluesOfTheView(xR, graph.deltaX * 40);
+        const xyArr: XYarr[] = this.getXYvaluesOfTheView(xR, graph.deltaX * 20);
 
-        const guesses: number[] = [];
+        const maxStep = (this.view.maxX - this.view.x) / 15;
 
-        for(const [x, y] of xyArr) {
-            var approxXval = x;
+        var guesses: number[];
 
-            for(let i = 0; i < 15; i++) {
-                approxXval -= 
-                Xterm.getYvalueOfTerms(approxXval, xR) / Xterm.getYvalueOfTerms(approxXval, xRprime);
-            }
-
-            guesses.push(approxXval);
+        if(hasNegativePowers) {
+            const posArr = xyArr.filter(([x, y]) => x > 0);
+            const negArr = xyArr.filter(([x, y]) => x < 0);
+            const posGuesses = 
+            getRealSortedValuesOfNewtonsMethodOnXYArr(posArr, xR, xRprime, maxStep);
+            const negGuesses = 
+            getRealSortedValuesOfNewtonsMethodOnXYArr(negArr, xR, xRprime, maxStep);
+            
+            guesses = [...negGuesses, ...posGuesses];
+        } else {
+            guesses = getRealSortedValuesOfNewtonsMethodOnXYArr(xyArr, xR, xRprime, maxStep);
         }
 
-        const realGuesses: number[] = keepRealNumsInArr(guesses);
-        realGuesses.sort((a, b) => a - b);
-
-        const roots = clusterNumbersAndGetMeans(realGuesses, 1e-6);
+        const roots = clusterNumbersAndGetMeans(guesses, 1e-6);
 
         return roots;
     }
 }
-
-// this should be near a y-value of 0
-        // {
-        //     var currentValTo0 = Infinity;
-        //     for(const [x, y] of xyArr) {
-        //         const valTo0 = Math.abs(y);
-
-        //         if(isFinite(currentValTo0)) {
-        //             if(currentValTo0 - valTo0) {
-
-        //             }
-        //         } else if(valTo0 < currentValTo0) {
-        //             xGuess = x;
-        //             currentValTo0 = valTo0;
-        //         }
-        //     }
-        // }

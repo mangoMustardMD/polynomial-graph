@@ -42,5 +42,5 @@ export type Coeffecient = number;
 export type Exponent = number;
 export type Term = [Coeffecient, Exponent];
 
-export const upperTermsSignal = createSignal<Term[]>([[1, 2]]);
+export const upperTermsSignal = createSignal<Term[]>([[1, 2], [1, -2]]);
 export const lowerTermsSignal = createSignal<Term[]>([[1, 1], [5, 0]]);

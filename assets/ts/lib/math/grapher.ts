@@ -17,7 +17,7 @@ export abstract class Grapher {
     scaleX = 1;
     scaleY = 1;
 
-    deltaX = .05;
+    deltaX = .01;
 
     groups = {
         grid: new Container(),
@@ -153,7 +153,7 @@ export abstract class Grapher {
 
     getXYvaluesOfTheView(terms: Xterm[], deltaX: number, scale = 100): XYarr[] {
         return Xterm.GetXYvaluesFromTermsOnSomeRange
-        (this.view.x - deltaX, this.view.maxX, deltaX, terms, scale);
+        (this.view.x - deltaX, this.canvasWidth / this.scaleX + this.view.x, deltaX, terms, scale);
     }
 
     graphTerms(terms: Xterm[], scale = 100) {

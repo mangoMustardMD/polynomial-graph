@@ -80,7 +80,7 @@ function onChange() {
         graph.graphTerms(upperArr);
         graph.graphTerms(lowerArr);
 
-        debounce(() => findIntersections(), 500);
+        debounce(() => findIntersections(), 200);
     });
 }
 

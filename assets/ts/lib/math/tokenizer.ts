@@ -63,6 +63,9 @@ export class Xterm {
     }
 
     getScaledYvalue(x: number, scale = 100): number {
+        if(this.power < 0 && Math.abs(x) < 1e-6)
+            return NaN;
+        
         return (this.coeffecient * ((x ** this.power) * scale));
     }
 
@@ -70,7 +73,11 @@ export class Xterm {
         var scaledY = 0;
 
         for(const term of terms) {
+            if(term.power < 0 && Math.abs(x) < 1e-6)
+                return NaN;
+
             const result = term.getScaledYvalue(x, scale);
+
             scaledY += result;
         }
 
@@ -154,6 +161,18 @@ export class Xterm {
             xyArr.push([x, this.getYvalueOfTerms(x, terms)]);
 
         return xyArr;
+    }
+
+    isPowerNegative(): boolean {
+        return this.power < 0;
+    }
+
+    static hasNegativePowers(arr: Xterm[]): boolean {
+        for(const term of arr) 
+            if(term.isPowerNegative())
+                return true;
+
+        return false;
     }
 
     static subtractPolynomials(a: Xterm[], b: Xterm[]): Xterm[] {
