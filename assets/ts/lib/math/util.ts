@@ -1,4 +1,6 @@
+import { Interval } from "../../constants";
 import { round } from "../misc/util";
+import { Xterm } from "./tokenizer";
 
 export function keepRealNumsInArr(arr: number[]): number[] {
     const reals: number[] = [];
@@ -50,4 +52,40 @@ export function transformNumArr(
 
 export function standardRoundArr(arr: number[]): number[] {
     return transformNumArr(arr, n => standardRoundNumber(n));
+}
+
+console.log(splitIntervalsByPoints(-5, 10, [-0.43, 0.43]));
+
+export function splitIntervalsByPoints(a: number, b: number, points: number[]): Interval[] {
+    if(points.length < 1) return [[a, b]];
+    const arr: Interval[] = [];
+    
+    points.sort((a, b) => a - b);
+    var lastPoint = a;
+
+    for(const point of points) {
+        const isPointTooSmall = point < a;
+        const isPointTooBig = point > b;
+        if(isPointTooSmall || isPointTooBig) continue;
+
+        arr.push([lastPoint, point]);
+        lastPoint = point;
+    }
+
+    arr.push([lastPoint, b]);
+
+    return arr;
+}
+
+export function calculateDiskVolume
+(a: number, b: number, Rx: Xterm[]): number {
+    const RxSquared = Xterm.squareTerms(Rx);
+    const integral = Xterm.getIntegralOfTerms(RxSquared);
+
+    const output = Math.PI * (
+        Xterm.getYvalueOfTerms(b, integral) 
+        - Xterm.getYvalueOfTerms(a, integral)
+    );
+
+    return output;
 }

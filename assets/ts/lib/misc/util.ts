@@ -160,7 +160,9 @@ export function rand255(): number {
   return Math.floor(Math.random() * 256);
 }
 
-export function round(n: number, digits: number) {
+export function round(n: number, digits: number): number {
+  const roundedN = n * digits;
+  if(!Number.isFinite(roundedN)) return n;
   return Math.round(n * digits) / digits;
 }
 

@@ -1,4 +1,4 @@
-import { Application, Container, Graphics } from "pixi.js";
+import { Application, Container, Graphics, StrokeStyle } from "pixi.js";
 import { Xterm } from "./tokenizer";
 import { floorToMultiples, XYarr, XYminMax, XYWH } from "../misc/util";
 
@@ -156,7 +156,7 @@ export abstract class Grapher {
         (this.view.x - deltaX, this.canvasWidth / this.scaleX + this.view.x, deltaX, terms, scale);
     }
 
-    graphTerms(terms: Xterm[], scale = 100) {
+    graphTerms(terms: Xterm[], style?: StrokeStyle, scale = 100) {
         const arr = this.getXYvaluesOfTheView(terms, this.deltaX, scale);
         // const arr = Xterm.GetXYvaluesFromTermsOnSomeRange
         // (this.view.x - this.deltaX, this.view.maxX, this.deltaX, terms, scale);
@@ -175,7 +175,7 @@ export abstract class Grapher {
                 && y < -margin) continue;
 
                 this.line(lastX, lastY, x, y);
-                this.g.stroke({color: "red", width: 5});
+                this.g.stroke(style ?? {color: "red", width: 5});
             }
 
             lastX = x;

@@ -63,14 +63,15 @@ export class GrapherWithGrids extends Grapher {
         });
     }
 
-    findIntersections(a: Xterm[], b: Xterm[]): number[] {
+    findIntersections
+    (a: Xterm[], b: Xterm[], xyArr?: XYarr[]): number[] {
         // R(x) = 0
         const xR = Xterm.subtractPolynomials(a, b);
         const xRprime = Xterm.getDerivativesOfTerms(xR);
         const hasNegativePowers = Xterm.hasNegativePowers(a)
         || Xterm.hasNegativePowers(b);
 
-        const xyArr: XYarr[] = this.getXYvaluesOfTheView(xR, graph.deltaX * 20);
+        xyArr ??= this.getXYvaluesOfTheView(xR, graph.deltaX * 20);
 
         const maxStep = (this.view.maxX - this.view.x) / 15;
 

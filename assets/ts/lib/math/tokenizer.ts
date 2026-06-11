@@ -1,19 +1,13 @@
 import { Coeffecient, Exponent, Term } from "../../constants";
 import { wait, XYarr } from "../misc/util";
+import { BasicTerm } from "./basicTerm";
+import { AbstractFuncTerm, LnFuncTerm } from "./funcTerm";
 
 type PossibleTerm = Xterm | undefined;
 
 export type PolynomialMap = Map<Exponent, Xterm>;
 
-export class Xterm {
-    coeffecient: number;
-    power: number;
-
-    constructor(coef: number, power: number) {
-        this.coeffecient = coef;
-        this.power = power;
-    }
-
+export class Xterm extends BasicTerm {
     add(t: Xterm): PossibleTerm {
         if(this.power == t.power) 
             return new Xterm(this.coeffecient + t.coeffecient, this.power);
@@ -58,18 +52,7 @@ export class Xterm {
         }
     }
 
-    getYvalue(x: number, scale = 100): number {
-        return this.getScaledYvalue(x, scale) / scale;
-    }
-
-    getScaledYvalue(x: number, scale = 100): number {
-        if(this.power < 0 && Math.abs(x) < 1e-6)
-            return NaN;
-        
-        return (this.coeffecient * ((x ** this.power) * scale));
-    }
-
-    static getYvalueOfTerms(x: number, terms: Xterm[], scale = 100): number {
+    static getYvalueOfTerms(x: number, terms: (Xterm | AbstractFuncTerm)[], scale = 100): number {
         var scaledY = 0;
 
         for(const term of terms) {
@@ -207,5 +190,42 @@ export class Xterm {
         }
 
         return finalStr;
+    }
+
+    getIntegral(): Xterm | AbstractFuncTerm  {
+        if(this.power == -1) return new LnFuncTerm(this.coeffecient, 1);
+
+        const nPlus1 = this.power+1;
+        return new Xterm(this.coeffecient / nPlus1, nPlus1);
+    }
+
+    static getIntegralOfTerms(terms: Xterm[]): (Xterm | AbstractFuncTerm)[] {
+        const arr: (Xterm | AbstractFuncTerm)[] = [];
+        for(const term of terms) arr.push(term.getIntegral());
+        return arr;
+    }
+
+    multiply(term: Xterm) {
+        this.coeffecient *= term.coeffecient;
+        this.power += term.power;
+    }
+
+    static squareTerms(terms: BasicTerm[]): Xterm[] {
+        const output: Xterm[] = [];
+        const a = terms;
+        const b = terms;
+
+        for(const outerTerm of a)
+            for(const ib in b) {
+                const innerTerm = b[ib];
+                const term = new Xterm(
+                    outerTerm.coeffecient * innerTerm.coeffecient, 
+                    outerTerm.power + innerTerm.power
+                );
+
+                output.push(term);
+            }
+        
+        return output;
     }
 }

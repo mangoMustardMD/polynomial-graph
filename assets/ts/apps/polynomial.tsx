@@ -1,10 +1,11 @@
-import { createEffect, createSignal, For, on, Show, Signal } from "solid-js";
+import { createEffect, For, on, Show, Signal } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
 import { Xterm } from "../lib/math/tokenizer";
-import { c, graph, lowerTermsSignal, Term, upperTermsSignal } from "../constants";
+import { c, events, graph, lowerTermsSignal, Term, upperTermsSignal } from "../constants";
 import { DragController } from "../lib/misc/drag";
 import { clearIntersections, findIntersections } from "./intersections";
 import { debounce } from "../lib/misc/util";
+import { NumInput } from "../lib/math/inputs";
 
 const icon = <div class="app">
     <h1>41y = 67x</h1>
@@ -34,9 +35,9 @@ initPr.then(() => {
 
     graph.setView({
         x: 0,
-        y: 0,
+        y: 1,
         maxX: 10,
-        maxY: 10,
+        maxY: 11,
     });
 
     const zoom = 50;
@@ -71,49 +72,19 @@ dc.onDrag = function(x, y) {
     onChange();
 };
 
-function onChange() {
+export function onChange() {
     const upperArr: Xterm[] = Xterm.fromArr(upperTermsSignal[0]());
     const lowerArr: Xterm[] = Xterm.fromArr(lowerTermsSignal[0]());
 
     initPr.then(() => {
         graph.clearGraph();
-        graph.graphTerms(upperArr);
+        graph.graphTerms(upperArr, {color: 0x0000ff, width: 5});
         graph.graphTerms(lowerArr);
-
+        
         debounce(() => findIntersections(), 200);
-    });
-}
 
-function NumInput(props: {
-    value: number, 
-    max?: number, 
-    placeholder: string,
-    onInput: (n: number) => void,
-    step: string,
-}): JSX.Element {
-    return <input 
-        value={props.value} 
-        type="number"
-        required
-        placeholder={props.placeholder}
-        max={props.max}
-        step={props.step}
-        oninput={e => {
-            const {validity} = e.currentTarget;
-            if(!validity.valid) e.currentTarget.classList.add("invalid");
-            else {
-                e.currentTarget.classList.remove("invalid");
-                const val = e.currentTarget.valueAsNumber;
-                if(Number.isNaN(val)) 
-                    e.currentTarget.classList.add("invalid");
-                else {
-                    // if valid
-                    props.onInput(val);
-                    onChange();
-                }
-            }
-        }}
-    />
+        events.emit("update");
+    });
 }
 
 function PolynomialInput(props: {
@@ -141,6 +112,7 @@ function PolynomialInput(props: {
                     <NumInput step="any" value={coef} placeholder="coeffecient"
                     onInput={newCoef => setTerms(arr => {
                         arr[i()][0] = newCoef;
+                        onChange();
                         return arr;
                     })} />
                     <p>
@@ -149,6 +121,7 @@ function PolynomialInput(props: {
                             <NumInput step="1" value={exp} max={10} placeholder="exponent"
                             onInput={newExp => setTerms(arr => {
                                 arr[i()][1] = newExp;
+                                onChange();
                                 return arr;
                             })} />
                         </sup>

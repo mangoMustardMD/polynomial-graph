@@ -1,4 +1,4 @@
-import { Application } from "pixi.js";
+import { Application, EventEmitter } from "pixi.js";
 import { $, $$, getCSSvarNum } from "./lib/misc/util";
 import { Grapher } from "./lib/math/grapher";
 import { GrapherWithGrids } from "./lib/math/grids";
@@ -41,6 +41,9 @@ export const graph = new GrapherWithGrids(appPr);
 export type Coeffecient = number;
 export type Exponent = number;
 export type Term = [Coeffecient, Exponent];
+export type Interval = [number, number];
 
-export const upperTermsSignal = createSignal<Term[]>([[1, 2], [1, -2]]);
-export const lowerTermsSignal = createSignal<Term[]>([[1, 1], [5, 0]]);
+export const upperTermsSignal = createSignal<Term[]>([[-1, 2], [4, 0]]);
+export const lowerTermsSignal = createSignal<Term[]>([[0, 0]]);
+
+export const events = new EventEmitter<"update">();
