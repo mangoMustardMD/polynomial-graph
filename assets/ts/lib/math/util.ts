@@ -31,7 +31,9 @@ export function getMeansOfNumMap(map: Map<number, number[]>): number[] {
 }
 
 export function standardRoundNumber(n: number): number {
-    const r = round(n, 10e8);
+    if(Math.abs(n) < 1e-6) return 0;
+
+    const r = round(n, 10e5);
     if(Number.isFinite(r)) return r;
     else return n;
 }

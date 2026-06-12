@@ -3,7 +3,7 @@ import { appPr, graph, lowerTermsSignal, upperTermsSignal } from "../constants";
 import { createSignal, For, Show } from "solid-js";
 import { XYarr } from "../lib/misc/util";
 import { Xterm } from "../lib/math/tokenizer";
-import { standardRoundArr } from "../lib/math/util";
+import { isReal, standardRoundArr } from "../lib/math/util";
 
 const icon = <div class="app">
     <h1>R(x)=0</h1>
@@ -27,7 +27,9 @@ const page = <div class="intersections-page">
                 <ul>
                     <For each={getIntersections()}>{
                         arr => {
-                            const [x, y] = standardRoundArr(arr) ;
+                            let [x, y] = standardRoundArr(arr);
+                            if(!isReal(y)) y = 0;
+
                             return <li>({x}, {y})</li>;
                         }
                     }</For>

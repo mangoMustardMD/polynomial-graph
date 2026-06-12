@@ -27,9 +27,10 @@ export function initPopup() {
     render(() => popupJsx, $("#other"));
     showPopup({
         title: "Warning!",
-        desc: "This calculator is made as a final project. "
+        desc: "Mobile support is limited. Use a computer or laptop. "
+    +   "This calculator is made as a final project. "
     +   "It may not be accurate and may have bugs/glitches. "
-    +   "Use at your own risk! 67"
+    +   "Use at your own risk! MANGO MUSTARD 67"
     });
 }
 
