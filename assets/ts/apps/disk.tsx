@@ -91,11 +91,25 @@ function update() {
     }
     
     setErrMsg();
+    getDiskVolume();
+}
+
+function getDiskVolume() {
+    const upperTerms = upperTermsSignal[0]();
+    const lowerTerms = lowerTermsSignal[0]();
+
+    const Rx = Xterm.subtractPolynomials(
+        Xterm.fromArr(upperTerms), 
+        Xterm.fromArr(lowerTerms)
+    );
+
     const val = calculateDiskVolume(aN, bN, Rx);
 
     setVolume(val);
     setVolumeWoutPi(val / Math.PI);
 }
+
+events.on("polynomialChange", () => getDiskVolume());
 
 const page = <div class="disk-page">
     <p>

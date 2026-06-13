@@ -46,4 +46,4 @@ export type Interval = [number, number];
 export const upperTermsSignal = createSignal<Term[]>([[-1, 2], [4, 0]]);
 export const lowerTermsSignal = createSignal<Term[]>([[0, 0]]);
 
-export const events = new EventEmitter<"update">();
+export const events = new EventEmitter<"update" | "polynomialChange">();

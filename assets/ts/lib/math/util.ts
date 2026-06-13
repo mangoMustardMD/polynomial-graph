@@ -56,8 +56,6 @@ export function standardRoundArr(arr: number[]): number[] {
     return transformNumArr(arr, n => standardRoundNumber(n));
 }
 
-console.log(splitIntervalsByPoints(-5, 10, [-0.43, 0.43]));
-
 export function splitIntervalsByPoints(a: number, b: number, points: number[]): Interval[] {
     if(points.length < 1) return [[a, b]];
     const arr: Interval[] = [];

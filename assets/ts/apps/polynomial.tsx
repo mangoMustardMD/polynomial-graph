@@ -84,6 +84,7 @@ export function onChange() {
         debounce(() => findIntersections(), 200);
 
         events.emit("update");
+        events.emit("polynomialChange");
     });
 }
 
