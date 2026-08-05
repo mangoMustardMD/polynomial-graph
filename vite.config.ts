@@ -13,5 +13,5 @@ export default defineConfig({
     }),
     solidPlugin(),
   ],
-  base: "/Ultimate-67-Graph/",
+  base: "/polynomial-graph/",
 });
