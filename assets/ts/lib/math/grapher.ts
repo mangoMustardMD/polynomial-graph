@@ -1,5 +1,5 @@
 import { Application, Container, Graphics, StrokeStyle } from "pixi.js";
-import { Xterm } from "./tokenizer";
+import { Xterm } from "./xterm";
 import { floorToMultiples, XYarr, XYminMax, XYWH } from "../misc/util";
 
 export abstract class Grapher {

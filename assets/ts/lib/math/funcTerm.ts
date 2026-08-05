@@ -1,5 +1,5 @@
 import { BasicTerm } from "./basicTerm";
-import { Xterm } from "./tokenizer";
+import { Xterm } from "./xterm";
 
 export const mathFuncs: 
 Record<"ln", (n: number) => number> = {

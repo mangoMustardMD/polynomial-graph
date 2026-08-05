@@ -3,11 +3,8 @@ import { Cursor } from "pixi.js";
 interface DragControllerOpts {
     touchEl: HTMLElement;
     enabled?: boolean;
-    isMultitouch: boolean;
     customDownElement?: HTMLElement;
 }
-
-// multitouch improvements made by DeltAndy
 
 export class DragController {
     downElement: HTMLElement;
@@ -15,7 +12,6 @@ export class DragController {
     touchEl: HTMLElement;
     touchPosition: Map<number, {lastX: number, lastY: number}> = new Map();
     isMouseDown: boolean = false;
-    isMultitouch: boolean;
     grab: Cursor = "grab";
     grabbing: Cursor = "grabbing";
     defaultGrab: Cursor = "grab";
@@ -25,7 +21,6 @@ export class DragController {
 
     constructor(o: DragControllerOpts) {
         this.downElement = o.customDownElement || o.touchEl;
-        this.isMultitouch = o.isMultitouch;
         this.touchEl = o.touchEl;
         if(o.enabled ?? true) this.enable();
 
@@ -38,16 +33,8 @@ export class DragController {
         this.touchEl.addEventListener("pointerup", e => this.touchUp(e));
         //this.touchEl.onpointerup = e => this.touchUp(e);
 
-        if(this.isMultitouch) {
-            this.touchEl.addEventListener
-            ("touchmove", e => Array.from(e.targetTouches).forEach(t => this.touchMove(t)));
-
-            //this.touchEl.ontouchmove = e => Array.from(e.targetTouches).forEach(t => this.touchMove(t));
-        } else {
-
-            this.touchEl.addEventListener("touchmove", e => this.touchMove(e.targetTouches[e.targetTouches.length-1]));
-            //this.touchEl.ontouchmove = e => this.touchMove(e.targetTouches[e.targetTouches.length-1]);
-        }
+        this.touchEl.addEventListener("touchmove", e => this.touchMove(e.targetTouches[e.targetTouches.length-1]));
+        //this.touchEl.ontouchmove = e => this.touchMove(e.targetTouches[e.targetTouches.length-1]);
 
         this.touchEl.addEventListener("mouseleave", e => this.mouseUp(e));
         //this.touchEl.onmouseleave = e => this.mouseUp(e);
@@ -68,13 +55,6 @@ export class DragController {
 
     disable() {
         this.isDisabled = true;
-        //this.touchEl.onpointerdown = null;
-        //this.touchEl.onpointerup = null;
-        //this.touchEl.ontouchmove = null;
-
-        //this.touchEl.onmousedown = null;
-        //this.touchEl.onmouseup = null;
-        //this.touchEl.onmousemove = null;
 
         this.canDrag = false;
         this.touchEl.style.cursor = "default";

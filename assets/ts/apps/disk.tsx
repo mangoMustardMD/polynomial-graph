@@ -2,7 +2,7 @@ import { JSX } from "solid-js/jsx-runtime";
 import { NumInput } from "../lib/math/inputs";
 import { createSignal, Show } from "solid-js";
 import { events, graph, Interval, lowerTermsSignal, Term, upperTermsSignal } from "../constants";
-import { Xterm } from "../lib/math/tokenizer";
+import { Xterm } from "../lib/math/xterm";
 import { calculateDiskVolume, isReal, splitIntervalsByPoints } from "../lib/math/util";
 import { onChange } from "./polynomial";
 import { round } from "../lib/misc/util";

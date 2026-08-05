@@ -26,15 +26,14 @@ interface PopupOpts {
 export function initPopup() {
     render(() => popupJsx, $("#other"));
     showPopup({
-        title: "Warning!",
-        desc: "Mobile support is limited. Use a computer or laptop. \n\n"
+        title: "Before continuing...",
+        desc: "Mobile support is limited. Use a computer or laptop for the best experience. \n\n"
     +   "This calculator is made as a final project for my calculus class in senior year of high school. "
     +   "It may not be accurate and may have bugs/glitches. Graphing asymptotes or negative exponents "
     +   "may incorrectly graph vertical lines on asymptotes. "
     +   "You should double check the polynomial disk solver just in case there's an error. "
-    +   "Very large numbers or very small numbers may cause significant rounding errors and may "
-    +   "cause the polynomial disk solver to give an incorrect answer. \n"
-    +   "Use at your own risk!"
+    +   "Huge or tiny numbers may "
+    +   "cause the polynomial disk solver to give an incorrect answer"
     });
 }
 

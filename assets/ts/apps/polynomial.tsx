@@ -1,6 +1,6 @@
 import { createEffect, For, on, Show, Signal } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
-import { Xterm } from "../lib/math/tokenizer";
+import { Xterm } from "../lib/math/xterm";
 import { c, events, graph, lowerTermsSignal, Term, upperTermsSignal } from "../constants";
 import { DragController } from "../lib/misc/drag";
 import { clearIntersections, findIntersections } from "./intersections";
@@ -14,7 +14,6 @@ const icon = <div class="app">
 const initPr = graph.init();
 
 const dc = new DragController({
-    isMultitouch: false,
     touchEl: c
 });
 

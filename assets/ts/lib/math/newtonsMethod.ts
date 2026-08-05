@@ -1,5 +1,5 @@
 import { XYarr } from "../misc/util";
-import { Xterm } from "./tokenizer";
+import { Xterm } from "./xterm";
 import { keepRealNumsInArr } from "./util";
 
 function useNewtonsMethod

@@ -1,7 +1,8 @@
-import { Coeffecient, Exponent, Term } from "../../constants";
-import { wait, XYarr } from "../misc/util";
+import { Exponent, Coeffecient, Term } from "../../constants";
+import { XYarr } from "../misc/util";
 import { BasicTerm } from "./basicTerm";
 import { AbstractFuncTerm, LnFuncTerm } from "./funcTerm";
+
 
 type PossibleTerm = Xterm | undefined;
 
@@ -9,7 +10,7 @@ export type PolynomialMap = Map<Exponent, Xterm>;
 
 export class Xterm extends BasicTerm {
     add(t: Xterm): PossibleTerm {
-        if(this.power == t.power) 
+        if (this.power == t.power)
             return new Xterm(this.coeffecient + t.coeffecient, this.power);
     }
 
@@ -18,17 +19,17 @@ export class Xterm extends BasicTerm {
     }
 
     subtractBy(t: Xterm): PossibleTerm {
-        if(this.power == t.power) 
+        if (this.power == t.power)
             return new Xterm(this.coeffecient - t.coeffecient, this.power);
     }
 
     static mapTerms(arr: Xterm[]): Map<number, Xterm[]> {
         const powerMap = new Map<number, Xterm[]>();
-        for(const term of arr) {
+        for (const term of arr) {
             const pow = term.power;
             const terms = powerMap.get(pow);
 
-            if(!terms) powerMap.set(pow, [term]);
+            if (!terms) powerMap.set(pow, [term]);
             else terms.push(term);
         }
 
@@ -40,24 +41,24 @@ export class Xterm extends BasicTerm {
     static fromArr(arr: [number, number][]): Xterm[];
 
     static fromArr(o: [number, number] | [number, number][]): Xterm | Xterm[] {
-        if(Array.isArray(o[0])) {
+        if (Array.isArray(o[0])) {
             const arr = o as [number, number][];
             const newArr: Xterm[] = [];
 
-            for(const [coef, power] of arr) newArr.push(new Xterm(coef, power));
+            for (const [coef, power] of arr) newArr.push(new Xterm(coef, power));
             return newArr;
         } else {
             const [coef, power] = o as [number, number];
-            return new Xterm(coef, power)
+            return new Xterm(coef, power);
         }
     }
 
     static getYvalueOfTerms(x: number, terms: (Xterm | AbstractFuncTerm)[], scale = 100): number {
         var scaledY = 0;
 
-        for(const term of terms) {
+        for (const term of terms) {
             // supposed to detect asymptotes
-            if(term.power < 0 && Math.abs(x) < 1e-5)
+            if (term.power < 0 && Math.abs(x) < 1e-5)
                 return NaN;
 
             const result = term.getScaledYvalue(x, scale);
@@ -71,9 +72,9 @@ export class Xterm extends BasicTerm {
     static getDerivativesOfTerms(terms: Xterm[]): Xterm[] {
         const arr: Xterm[] = [];
 
-        for(const term of terms)
+        for (const term of terms)
             arr.push(term.getDerivative());
-        
+
         return arr;
     }
 
@@ -91,12 +92,10 @@ export class Xterm extends BasicTerm {
         console.log(this.getXYpointFromTermsAsString(x, terms, scale));
     }
 
-    static GetXYvaluesFromTermsOnSomeRange
-    (xMin: number, xMax: number, deltaX: number, terms: Xterm[], scale = 100): 
-    XYarr[] {
+    static GetXYvaluesFromTermsOnSomeRange(xMin: number, xMax: number, deltaX: number, terms: Xterm[], scale = 100): XYarr[] {
         const final: XYarr[] = [];
 
-        for(let x = xMin; x < xMax; x += deltaX) {
+        for (let x = xMin; x < xMax; x += deltaX) {
             const y = this.getYvalueOfTerms(x, terms, scale);
             final.push([x, y]);
         }
@@ -105,43 +104,43 @@ export class Xterm extends BasicTerm {
     }
 
     static forEachOfSamePower(
-        a: Xterm[], 
-        b: Xterm[], 
+        a: Xterm[],
+        b: Xterm[],
         f: (a: Coeffecient, b: Coeffecient, power: Exponent) => Coeffecient
     ): Term[] {
         const powerMap: Map<Exponent, Coeffecient> = new Map();
 
-        for(const term of a) {
-            const {coeffecient, power} = term;
-            if(coeffecient == 0) continue;
+        for (const term of a) {
+            const { coeffecient, power } = term;
+            if (coeffecient == 0) continue;
 
             const powerEntry = powerMap.get(power);
 
-            if(!powerEntry) powerMap.set(power, coeffecient);
+            if (!powerEntry) powerMap.set(power, coeffecient);
             else powerMap.set(power, powerEntry + coeffecient);
         }
 
-        for(const term of b) {
-            const {coeffecient, power} = term;
-            if(coeffecient == 0) continue;
+        for (const term of b) {
+            const { coeffecient, power } = term;
+            if (coeffecient == 0) continue;
 
             const powerEntry: Coeffecient | undefined = powerMap.get(power);
 
-            if(!powerEntry) powerMap.set(power, f(0, coeffecient, power));
+            if (!powerEntry) powerMap.set(power, f(0, coeffecient, power));
             else powerMap.set(power, f(powerEntry, coeffecient, power));
         }
 
         const arr: Term[] = [];
-        for(const [power, coeffecient] of powerMap)
+        for (const [power, coeffecient] of powerMap)
             arr.push([coeffecient, power]);
-        
+
         return arr;
     }
 
     static getXYvaluesFromXarr(xArr: number[], terms: Xterm[]): XYarr[] {
         const xyArr: XYarr[] = [];
 
-        for(const x of xArr) 
+        for (const x of xArr)
             xyArr.push([x, this.getYvalueOfTerms(x, terms)]);
 
         return xyArr;
@@ -152,8 +151,8 @@ export class Xterm extends BasicTerm {
     }
 
     static hasNegativePowers(arr: Xterm[]): boolean {
-        for(const term of arr) 
-            if(term.isPowerNegative())
+        for (const term of arr)
+            if (term.isPowerNegative())
                 return true;
 
         return false;
@@ -161,17 +160,17 @@ export class Xterm extends BasicTerm {
 
     static subtractPolynomials(a: Xterm[], b: Xterm[]): Xterm[] {
         const terms = this.forEachOfSamePower(a, b, (a, b) => a - b);
-        
+
         return Xterm.fromArr(terms);
     }
 
     static dividePolynomials(a: Xterm[], b: Xterm[]): Xterm[] {
         const terms = this.forEachOfSamePower(a, b, (a, b) => {
             const d = a / b;
-            if(b == 0) return a;
+            if (b == 0) return a;
             else return d;
         });
-        
+
         return Xterm.fromArr(terms);
     }
 
@@ -181,11 +180,11 @@ export class Xterm extends BasicTerm {
 
     static convertTermArrToVarStr(arr: Term[]): string {
         var finalStr = "";
-        for(const term of arr) {
+        for (const term of arr) {
             const str = this.convertTermToVarStr(term);
-            if(finalStr.length == 0) finalStr += str;
+            if (finalStr.length == 0) finalStr += str;
             else {
-                if(str[0] == "-") finalStr += (" " + str);
+                if (str[0] == "-") finalStr += (" " + str);
                 else finalStr += (" + " + str);
             }
         }
@@ -193,16 +192,16 @@ export class Xterm extends BasicTerm {
         return finalStr;
     }
 
-    getIntegral(): Xterm | AbstractFuncTerm  {
-        if(this.power == -1) return new LnFuncTerm(this.coeffecient, 1);
+    getIntegral(): Xterm | AbstractFuncTerm {
+        if (this.power == -1) return new LnFuncTerm(this.coeffecient, 1);
 
-        const nPlus1 = this.power+1;
+        const nPlus1 = this.power + 1;
         return new Xterm(this.coeffecient / nPlus1, nPlus1);
     }
 
     static getIntegralOfTerms(terms: Xterm[]): (Xterm | AbstractFuncTerm)[] {
         const arr: (Xterm | AbstractFuncTerm)[] = [];
-        for(const term of terms) arr.push(term.getIntegral());
+        for (const term of terms) arr.push(term.getIntegral());
         return arr;
     }
 
@@ -216,17 +215,17 @@ export class Xterm extends BasicTerm {
         const a = terms;
         const b = terms;
 
-        for(const outerTerm of a)
-            for(const ib in b) {
+        for (const outerTerm of a)
+            for (const ib in b) {
                 const innerTerm = b[ib];
                 const term = new Xterm(
-                    outerTerm.coeffecient * innerTerm.coeffecient, 
+                    outerTerm.coeffecient * innerTerm.coeffecient,
                     outerTerm.power + innerTerm.power
                 );
 
                 output.push(term);
             }
-        
+
         return output;
     }
 }

@@ -2,7 +2,7 @@ import { graph } from "../../constants";
 import { XYarr } from "../misc/util";
 import { clusterNumbersAndGetMeans } from "./clusterNumbers";
 import { Grapher } from "./grapher";
-import { Xterm } from "./tokenizer";
+import { Xterm } from "./xterm";
 import { getRealSortedValuesOfNewtonsMethodOnXYArr } from "./newtonsMethod";
 
 type Stop = boolean;

@@ -2,7 +2,7 @@ import { JSX } from "solid-js/jsx-runtime";
 import { appPr, graph, lowerTermsSignal, upperTermsSignal } from "../constants";
 import { createSignal, For, Show } from "solid-js";
 import { XYarr } from "../lib/misc/util";
-import { Xterm } from "../lib/math/tokenizer";
+import { Xterm } from "../lib/math/xterm";
 import { isReal, standardRoundArr } from "../lib/math/util";
 
 const icon = <div class="app">

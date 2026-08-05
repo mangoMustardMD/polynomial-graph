@@ -1,6 +1,6 @@
 import { Interval } from "../../constants";
 import { round } from "../misc/util";
-import { Xterm } from "./tokenizer";
+import { Xterm } from "./xterm";
 
 export function keepRealNumsInArr(arr: number[]): number[] {
     const reals: number[] = [];
