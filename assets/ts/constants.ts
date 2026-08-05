@@ -1,6 +1,5 @@
 import { Application, EventEmitter } from "pixi.js";
-import { $, $$, getCSSvarNum } from "./lib/misc/util";
-import { Grapher } from "./lib/math/grapher";
+import { $, $$ } from "./lib/misc/util";
 import { GrapherWithGrids } from "./lib/math/grids";
 import { createSignal } from "solid-js";
 
@@ -11,9 +10,6 @@ export const c = $$("canvas", {
     },
     text: "ERROR: This app is not supported in this browser"
 });
-
-const rootStyleMap = document.documentElement.computedStyleMap();
-const outerBorderWidth = getCSSvarNum(rootStyleMap, "--outer-border-width", 2);
 
 export var appPrRes: () => void;
 export const appPr: Promise<Application> = new Promise<Application>(res => {
@@ -43,7 +39,7 @@ export type Exponent = number;
 export type Term = [Coeffecient, Exponent];
 export type Interval = [number, number];
 
-export const upperTermsSignal = createSignal<Term[]>([[-1, 2], [4, 0]]);
+export const upperTermsSignal = createSignal<Term[]>([[-1, -1]]);
 export const lowerTermsSignal = createSignal<Term[]>([[0, 0]]);
 
 export const events = new EventEmitter<"update" | "polynomialChange">();

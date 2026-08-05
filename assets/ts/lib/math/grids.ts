@@ -1,6 +1,6 @@
 import { graph } from "../../constants";
 import { XYarr } from "../misc/util";
-import { clusterNumbers, clusterNumbersAndGetMeans } from "./clusterNumbers";
+import { clusterNumbersAndGetMeans } from "./clusterNumbers";
 import { Grapher } from "./grapher";
 import { Xterm } from "./tokenizer";
 import { getRealSortedValuesOfNewtonsMethodOnXYArr } from "./newtonsMethod";

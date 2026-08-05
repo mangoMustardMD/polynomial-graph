@@ -56,7 +56,8 @@ export class Xterm extends BasicTerm {
         var scaledY = 0;
 
         for(const term of terms) {
-            if(term.power < 0 && Math.abs(x) < 1e-6)
+            // supposed to detect asymptotes
+            if(term.power < 0 && Math.abs(x) < 1e-5)
                 return NaN;
 
             const result = term.getScaledYvalue(x, scale);

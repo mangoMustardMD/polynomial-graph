@@ -174,6 +174,13 @@ export abstract class Grapher {
                 || lastY < -margin
                 && y < -margin) continue;
 
+                // const yDiff = Math.abs(y - lastY);
+                // if(yDiff > 50000) {
+                //     lastX = x;
+                //     lastY = y;
+                //     continue;
+                // }
+
                 this.line(lastX, lastY, x, y);
                 this.g.stroke(style ?? {color: "red", width: 5});
             }
